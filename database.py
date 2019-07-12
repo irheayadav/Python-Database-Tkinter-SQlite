@@ -26,8 +26,11 @@ connection.execute(" CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ( " + STUDENT
 print("table created sucessfully. ")
 
 
-label_1 = tk.Label(root, text="Student Name")
+label_1 = tk.Label(root, text="Student Management System", fg="#06a099", width=35)
+label_1.config(font=("Century", 30))
+label_1.grid(row=0, columnspan=2, padx=(10,10), pady=(30, 0))
 label_1.pack()
+
 name_field1 = tk.Entry(root)
 name_field1.pack()
 
@@ -53,34 +56,22 @@ def database():
     college = name_field2.get()
     address = name_field3.get()
     phone = name_field4.get()
+    if ((name == '') | (college == '') | (address == '') | (phone == '')):
+        messagebox.showerror("Error", "Please fill Details")
+    else:
     # print(name1, name2, name3, name4)
+        try:
+            connection.execute(" INSERT INTO " + TABLE_NAME + " ( " + STUDENT_NAME + " , " + STUDENT_COLLEGE + " , "
+                           + STUDENT_ADDRESS + " , " + STUDENT_PHONE + " ) VALUES ( '"+name +"',' " +
+                           college+ "',  " + " '"+address+"', "+phone+ ");")
+            connection.commit()
+            messagebox.showinfo("Your data has been sucessfully saved")
 
-    connection.execute(" INSERT INTO " + TABLE_NAME + " ( " + STUDENT_NAME + " , " + STUDENT_COLLEGE + " , "
-                       + STUDENT_ADDRESS + " , " + STUDENT_PHONE + " ) VALUES ( '"+name +"',' " +
-                       college+ "',  " + " '"+address+"', "+phone+ ");")
-    connection.commit()
-    messagebox.showinfo("Your data has been sucessfully saved")
+        except sqlite3.OperationalError:
+            messagebox.showerror("Error", "Enter valid Value")
 
 butt1 = tk.Button(root, text="Save", command=lambda: database())
 butt1.pack()
-
-
-
-def retrive():
-    cursor = connection.execute("SELECT * FROM " + TABLE_NAME + " ;")
-    for row in cursor:
-        print("Student id is: ", row[0])
-        print("Student name is: ", row[1])
-        print("Student college is: ", row[2])
-        print("student Address is:", row[3])
-        print("Student phone is:", row[4])
-
-
-butt2 = tk.Button(root, text="Retrive", command=lambda: retrive())
-butt2.pack()
-
-root.mainloop()
-
 
 
 
