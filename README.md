@@ -1,2 +1,2 @@
 # Python-Database-Tkinter-SQlite
-Database using Sqlite 
+Database using Sqlite3
